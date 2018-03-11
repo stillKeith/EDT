@@ -1,0 +1,109 @@
+card<-read.table(file = "c:CardiologyRel.csv", header=TRUE, sep =",")
+head(card)
+
+#1.a
+
+age - continuous numeric
+sex -  nominal variable 
+cp -  ordinal variable
+trestbps - continuous numeric
+cholesterol - continuous numeric
+fasting bloo sugar - nominal variable 
+restecg - ordinal variable
+diastbpexerc - continuous numeric
+thalach - continuous numeric
+exang - nominal variable 
+oldspeak - continuous numeric
+slope -  discrete variable 
+ca -  discrete variable 
+thal -  discrete variable 
+
+1.b
+% of na but i dont think it works 
+sum(is.na(card))/prod(dim(card))
+
+# 1.c
+summary(card)
+
+#standard deviation 
+sd(card, na.rm = FALSE)
+str(card)
+
+# 1.d
+summary(card, na.rm=TRUE)
+
+mean 
+median 
+mode 
+
+# if are matching then is a normal 
+# mean > median > mode right tail 
+# mean > median > mode left tail 
+
+## function to find the Mode
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+Mode(Banking$age)
+
+#1.e
+# need to install a package for skewness function
+install.packages("e1071")
+library(e1071)    
+skewness(card$trestbps)
+
+# postive skew is to the right negative is to the left 
+
+#1.f
+# this i had a hard time trying to figure out maybe a different plot 
+plot(card$class, card$age)
+
+
+## 2.a
+
+
+
+ggplot(card, aes(age)) + geom_histogram()
+ggplot() + geom_histogram(data = card, aes(x = age, fill = class))
+## 3.a
+
+# 3
+> ggplot() + geom_bar(data = card, aes(x = sex, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = cp, fill = class))
+ggplot() + geom_bar(data = card, aes(x = card$Fasting.blood.sugar...120, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = card$restecg, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = card$exang, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = card$slope, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = card$ca, fill = class))
+> ggplot() + geom_bar(data = card, aes(x = card$thal, fill = class))
+
+
+# 4
+https://www.youtube.com/watch?v=FRlTh5HQORA
+
+
+In his notes he says you can use a hist to show outliers only used on numeric values. 
+
+hist(card$age)
+ hist(card$trestbps) # looks like there is an outlier at the very end but could be ok 
+ hist(card$cholesterol) # same as above looks much more extreme in this case 
+ hist(card$diastbpexerc)
+ hist(card$thalach)
+ hist(card$oldpeak) # looks like there is a outlier at the end 
+ ## 
+ using box plots shows the outliers clearly. the box shows the 1st and 3rd qu with the line showing the range and the dots being outliers
+ 
+ ggplot() + geom_boxplot(data = card, aes(x = card$class , y = card$cholesterol )) + coord_flip()
+ 
+#  5
+ pairs(card)
+ ## cor()
+ shows the realaship bewteen values 
+  strong linaer correlation 
+ ggplot(card, aes(x=card$trestbps,y=card$diastbpexerc ,color=class)) + geom_point()
+ 
+ 
+ ggplot(card, aes(x=card$cholesterol,y=card$thalach ,color=card$class) + geom_point()
+ ggplot(card, aes(x=cholesterol,y=thalach ,color=class)) + geom_point()

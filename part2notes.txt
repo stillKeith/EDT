@@ -1,0 +1,127 @@
+# Part2 
+
+## question 6 
+
+pictures attached from weka. 
+
+Discretize 3, 6, 10 and 20 bins
+
+done in R 
+knn 3, 6, 10 and 20 
+
+results <- kmeans(card$diastbpexerc, 3)
+results6 <- kmeans(card$diastbpexerc, 6)
+results10 <- kmeans(card$diastbpexerc, 10)
+results20 <- kmeans(card$diastbpexerc, 20)
+
+Discretize will turn numric values into nominal values. this will make it easier to for descion tree algrothims to work and have less nodes. 
+equal width binning will create splits the data up into equal sized groups. This means that the entire dataset will be split up into equal parts and each variable will be grouped depending on the dataset and not afected by the data in the dataset. with knn it looks to the numbers closest to it and groups them depending on which is closest. 
+knn makes different sized grouped then Discretize does. 
+the groups seem to be much more even in knn then with discretize, with discretize we get groups at the end with very few in it as we use larger values for k. with knn the groups are look to be split up much more evenly. 
+I think knn is the better method as it split the data up better. as it does leave big groups together in the middle so when you running another machine learning algrothim on it should give us a better idea of what causes someone to be sick in our dataset. 
+
+
+## question 7 
+
+A:
+choose trestbps cause it was the most skewed to the left. 
+
+skewness(card$trestbps)
+is 0.72
+
+skewness(card$thalach) skewed to the left 
+-0.5391399
+
+scale(card$thalach)
+
+zscore.thalach <-(card$thalach -
+mean(card$thalach))/sd(card$thalach)
+
+> summary(zscore.thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-3.4575 -0.6246  0.1440  0.0000  0.7150  2.2962 
+
+> summary(card$thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   71.0   135.5   153.0   149.7   166.0   202.0 
+   
+ > skewness(zscore.thalach)
+[1] -0.5391399
+> skewness(card$thalach)
+[1] -0.5391399 
+ 
+
+no change is skewness but the numbers are smaller. 
+
+B:
+
+natlog.thalach <- log(card$thalach)
+
+> summary(natlog.thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  4.263   4.909   5.030   4.996   5.112   5.308 
+> summary(card$thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   71.0   135.5   153.0   149.7   166.0   202.0 
+> skewness(natlog.thalach)
+[1] -1.000733
+> skewness(card$thalach)
+[1] -0.5391399
+
+natlog.thalach
+card$thalach
+
+## makes the numbers much smaller but the skewness is bigger 
+
+C:
+
+sqrt.thalach <- sqrt(card$thalach)
+
+> skewness(sqrt.thalach)
+[1] -0.7552266
+> skewness(card$thalach)
+[1] -0.5391399
+
+summary(sqrt.thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  8.426  11.640  12.369  12.198  12.884  14.213 
+> summary(card$thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   71.0   135.5   153.0   149.7   166.0   202.0 
+   
+ ## less skewed but numbers bigger then using log. a good middle ground. 
+
+ 
+D:
+invsqrt.thalach <- 1/sqrt(card$thalach)
+
+> skewness(invsqrt.thalach)
+[1] 1.288843
+> skewness(card$thalach)
+[1] -0.5391399
+
+> summary(card$thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   71.0   135.5   153.0   149.7   166.0   202.0 
+> summary(invsqrt.thalach)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.07036 0.07762 0.08085 0.08253 0.08591 0.11868 
+
+## changed the data from left skewed to right. seems right as its the inverse. all the numbers are between 1 and 0. I would have taught it would seem simalar to 7c just the numbers reversed.
+
+
+
+## 8
+
+which(is.na(card$restecg))
+
+using knn to find the missing values, using the 3 closest values to get the new value 
+ card1 <- kNN(card, variable = "restecg", k = 3 ) 	
+ library(VIM)
+
+ 
+ 
+ 
+ median for the numric value is 240. 
+ seems ok as its not as effect by outliers as the mean, there is only two missing values so maybe better to get get rid of the values rather then provieding false data. 
+
